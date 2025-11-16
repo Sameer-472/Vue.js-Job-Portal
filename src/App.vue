@@ -1,9 +1,8 @@
 <!-- Composition API  -->
 <script setup>
-
-import Herobanner from './components/Herobanner.vue';
-import JobListings from './components/JobListings.vue';
+import { RouterView } from 'vue-router';
 import navbar from './components/navbar.vue';
+
 
 </script>
 
@@ -11,7 +10,6 @@ import navbar from './components/navbar.vue';
 
   <div class="Poppins">
     <navbar />
-    <Herobanner />
-    <JobListings />
+    <RouterView />
   </div>
 </template>
