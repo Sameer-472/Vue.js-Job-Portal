@@ -1,3 +1,4 @@
+import NotFound from "@/components/NotFound.vue";
 import HomeView from "@/views/HomeView.vue";
 import JobsView from "@/views/JobsView.vue";
 import { createRouter , createWebHistory } from "vue-router";
@@ -15,6 +16,16 @@ const router = createRouter({
             path: '/jobs',
             name: 'job',
             component: JobsView
+        },
+        {
+            path: '/jobs/:id',
+            name: 'job',
+            component: JobsView
+        },
+        {
+            path: '/:catchAll(.*)',
+            name: 'not-found',
+            component: NotFound
         }
     ]
 })

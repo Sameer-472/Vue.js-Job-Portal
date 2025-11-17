@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import JobsData from "@/jobs.json"
 import { defineProps } from 'vue';
 import JobListing from './JobListing.vue';
+import axios from 'axios';
 
 
 defineProps({
@@ -15,6 +16,16 @@ defineProps({
         default: false
     }
 
+})
+
+// same as useEffect in react 
+onMounted(async ()=> {
+    try {
+        const response = await axios.get("localhost:5000/jobs");
+        jobs.value = response.data;
+    } catch (error) {
+        console.log("error" , error)
+    }
 })
 
 const jobs = ref(JobsData);
