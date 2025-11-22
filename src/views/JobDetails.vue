@@ -11,11 +11,14 @@ const state = reactive({
 const route = useRoute();
 const router = useRouter();
 
-const jobId = route.params.jobId
+const jobId = route.params.id;
+
+console.log("jobId" , jobId)
 
 onMounted(async () => {
     try {
-        const response = axios.get(`http://localhost:5000/jobs/${jobId}`);
+        const response = await axios.get(`http://localhost:5000/jobs/${jobId}`);
+        console.log("response.data" , response.data)
         state.job = response.data;
         console.log("job details" , state.job);
     } catch (error) {
@@ -23,6 +26,15 @@ onMounted(async () => {
     }
     finally {
         state.isLoading = false;
+    }
+})
+
+const deleteJob = (async()=> {
+    try {
+        await axios.delete(`http://localhost:5000/jobs/${jobId}`);
+        router.push('/jobs');
+    } catch (error) {
+        console.log("getting error on deleting job" , error)
     }
 })
 </script>
@@ -85,7 +97,7 @@ onMounted(async () => {
                     </div>
 
                     <!-- Manage -->
-                    <!-- <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md mt-6">
                         <h3 class="text-xl font-bold mb-6">Manage Job</h3>
                         <RouterLink :to="`/jobs/edit/${state.job.id}`"
                             class="bg-green-500 hover:bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">
@@ -94,7 +106,7 @@ onMounted(async () => {
                             class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">
                             Delete Job
                         </button>
-                    </div> -->
+                    </div>
                 </aside>
             </div>
         </div>
