@@ -1,9 +1,14 @@
-<script setup>
+s<script setup>
 import { computed, defineProps, ref } from 'vue';
+import { RouterLink, useRoute } from 'vue-router';
+
 
  const props = defineProps({
     job: Object
 });
+
+const route = useRoute();
+const jobId = route.params.jobId
 
 const showFullDescription = ref(false);
 
@@ -25,7 +30,7 @@ console.log(truncatedDescription)
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-md relative">
+  <RouterLink :to="'jobs/'+ job?.id" class="bg-white rounded-xl shadow-md relative cursor-pointer">
     <div class="p-4">
       <div class="mb-6">
         <div class="text-gray-600 my-2">{{ job?.type }}</div>
@@ -61,5 +66,5 @@ console.log(truncatedDescription)
         </RouterLink> -->
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>

@@ -16,20 +16,22 @@ defineProps({
         default: false
     }
 
-})
+});
 
+const jobs = ref([]);
 // same as useEffect in react 
-onMounted(async ()=> {
+onMounted(async () => {
     try {
-        const response = await axios.get("localhost:5000/jobs");
+        const response = await axios.get("http://localhost:5000/jobs");
         jobs.value = response.data;
+        console.log("jobs.value", jobs.value)
     } catch (error) {
-        console.log("error" , error)
+        console.log("error", error)
     }
 })
 
-const jobs = ref(JobsData);
-console.log("jobs", jobs.value);
+
+
 </script>
 <template>
     <div class="container-xl lg:container m-auto">
@@ -37,7 +39,7 @@ console.log("jobs", jobs.value);
             Browse Jobs
         </h2>
 
-        <JobListing v-for="job in jobs.jobs" :key="job.id" :job="job" />
+        <JobListing v-for="job in jobs" :key="job.id" :job="job" />
         <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div v-for="job in jobs.jobs" :key="job.id">
                 {{ job.title }}

@@ -1,5 +1,6 @@
 import NotFound from "@/components/NotFound.vue";
 import HomeView from "@/views/HomeView.vue";
+import JobDetails from "@/views/JobDetails.vue";
 import JobsView from "@/views/JobsView.vue";
 import { createRouter , createWebHistory } from "vue-router";
 // const { createRouter , createWebHistory} = require("vue-router");
@@ -19,8 +20,8 @@ const router = createRouter({
         },
         {
             path: '/jobs/:id',
-            name: 'job',
-            component: JobsView
+            name: 'jobDetails',
+            component: JobDetails
         },
         {
             path: '/:catchAll(.*)',
