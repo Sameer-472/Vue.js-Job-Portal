@@ -30,7 +30,7 @@ console.log(truncatedDescription)
 </script>
 
 <template>
-  <RouterLink :to="'jobs/'+ job?.id" class="bg-white rounded-xl shadow-md relative cursor-pointer">
+  <RouterLink :to="'jobs/'+ job?.id" class="bg-white rounded-xl shadow-md relative cursor-pointer col-span-3  md:col-span-1">
     <div class="p-4">
       <div class="mb-6">
         <div class="text-gray-600 my-2">{{ job?.type }}</div>

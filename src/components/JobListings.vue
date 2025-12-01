@@ -39,13 +39,15 @@ onMounted(async () => {
             Browse Jobs
         </h2>
 
-        <JobListing v-for="job in jobs" :key="job.id" :job="job" />
+        <div class="grid grid-cols-3 gap-8 my-10 mx-[15px]">
+            <JobListing v-for="job in jobs" :key="job.id" :job="job"/>
+        </div>
         <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div v-for="job in jobs.jobs" :key="job.id">
                 {{ job.title }}
             </div>
         </div> -->
-        < <!-- Show loading spinner while loading is true -->
+        <!-- Show loading spinner while loading is true -->
             <!-- <div v-if="state.isLoading" class="text-center text-gray-500 py-6">
             <PulseLoader />
         </div> -->
