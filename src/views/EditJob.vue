@@ -1,4 +1,34 @@
 <script setup>
+import axios from 'axios';
+import { onMounted, reactive } from 'vue';
+
+
+const form = reactive({
+    type: 'Full-Time',
+    title: '',
+    description: '',
+    salary: '',
+    location: '',
+    company: {
+        name: '',
+        description: '',
+        contactEmail: '',
+        contactPhone: '',
+    },
+})
+
+const state = reactive({
+    job: {},
+    isLoading: true
+})
+
+onMounted(async ()=> {
+    try {
+        const response = await axios.get(`/api/job`)
+    } catch (error) {
+        console.log("getting error")
+    }
+})
 </script>
 
 <template>

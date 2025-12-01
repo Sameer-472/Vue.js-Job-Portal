@@ -3,6 +3,7 @@ import { defineProps } from 'vue';
 import HomeCards from './HomeCards.vue';
 import JobListings from './JobListings.vue';
 HomeCards
+
 defineProps({
     title: {
         type: String,
