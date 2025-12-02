@@ -8,7 +8,7 @@ import navbar from './components/navbar.vue';
 
 <template>
 
-  <div class="Poppins">
+  <div class="font-poppins">
     <navbar />
     <RouterView />
   </div>
