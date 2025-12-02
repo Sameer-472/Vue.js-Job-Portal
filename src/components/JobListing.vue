@@ -27,13 +27,13 @@ const truncatedDescription = computed(() => {
 })
 
 console.log("Job is lisitng", props.job);
-console.log(truncatedDescription)
+// console.log(truncatedDescription)
 
 </script>
 
 <template>
-  <RouterLink :to="'jobs/' + job?.id"
-    class="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+  <div 
+    class="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-lg transition-shadow  group">
     <!-- <div class="p-4">
       <div class="mb-6">
         <div class="text-gray-600 my-2">{{ job?.type }}</div>
@@ -70,7 +70,7 @@ console.log(truncatedDescription)
           <h3 class="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
             {{ job.title }}
           </h3>
-          <p class="text-slate-600">{{ job.company }}</p>
+          <p class="text-slate-600">{{ job.company?.name }}</p>
         </div>
       </div>
       <button class="text-slate-400 hover:text-blue-600 transition-colors">
@@ -85,20 +85,20 @@ console.log(truncatedDescription)
 
     <div class="flex flex-wrap gap-2 mb-4">
       <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">{{ job.type }}</span>
-      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">{{ job.level }}</span>
+      <!-- <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">{{ job.level }}</span> -->
       <span class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">{{ job.salary }}</span>
     </div>
 
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-4 text-sm text-slate-500">
         <span>📍 {{ job?.location || "ME Digital Group" }}</span>
-        <span>⏱️ {{ job?.posted || "12-10-2025"}}</span>
+        <!-- <span>⏱️ {{ job?.posted || "12-10-2025"}}</span> -->
       </div>
-      <button
+      <RouterLink :to="'jobs/' + job?.id"
         class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-medium">
         View Details
-      </button>
+      </RouterLink>
     </div>
 
-  </RouterLink>
+  </div>
 </template>
