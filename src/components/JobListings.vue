@@ -34,13 +34,14 @@ onMounted(async () => {
 
 </script>
 <template>
-    <div class="container-xl lg:container m-auto">
-        <h2 class="text-3xl font-bold text-green-500 mb-6 text-center">
-            Browse Jobs
-        </h2>
+    <div class="max-w-7xl mx-auto px-6 py-16">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Featured Jobs</h2>
+            <p class="text-slate-600">Latest opportunities from top companies</p>
+        </div>
 
         <div class="grid grid-cols-3 gap-8 my-10 mx-[15px]">
-            <JobListing v-for="job in jobs" :key="job.id" :job="job"/>
+            <JobListing v-for="job in jobs" :key="job.id" :job="job" />
         </div>
         <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div v-for="job in jobs.jobs" :key="job.id">
@@ -48,12 +49,12 @@ onMounted(async () => {
             </div>
         </div> -->
         <!-- Show loading spinner while loading is true -->
-            <!-- <div v-if="state.isLoading" class="text-center text-gray-500 py-6">
+        <!-- <div v-if="state.isLoading" class="text-center text-gray-500 py-6">
             <PulseLoader />
         </div> -->
 
-            <!-- Shoe job listing when done loading -->
-            <!-- <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Shoe job listing when done loading -->
+        <!-- <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <JobListing v-for="job in state.jobs.slice(0, limit || state.jobs.length)" :key="job.id" :job="job" />
         </div> -->
 

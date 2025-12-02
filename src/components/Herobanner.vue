@@ -41,6 +41,27 @@ defineProps({
                 </button>
             </div>
         </div>
+
+
+    </section>
+
+    <section class="bg-blue-50 py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-3 gap-8 text-center">
+                <div>
+                    <p class="text-4xl font-bold text-blue-600">15,000+</p>
+                    <p class="text-slate-600">Active Jobs</p>
+                </div>
+                <div>
+                    <p class="text-4xl font-bold text-blue-600">50,000+</p>
+                    <p class="text-slate-600">Companies</p>
+                </div>
+                <div>
+                    <p class="text-4xl font-bold text-blue-600">100,000+</p>
+                    <p class="text-slate-600">Successful Hires</p>
+                </div>
+            </div>
+        </div>
     </section>
     <!-- <HomeCards /> -->
 </template>
