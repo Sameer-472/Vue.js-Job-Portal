@@ -34,3 +34,8 @@ client/.eslintcache
 
 # Vitest
 client/__screenshots__/
+
+
+# backend 
+
+backend/node_modules/
