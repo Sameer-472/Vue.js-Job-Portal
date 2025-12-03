@@ -69,6 +69,22 @@
         "contactEmail": "test@gmail.com",
         "contactPhone": "+923163136464"
       }
+    },
+    {
+      "id": "e970",
+      "jobTitle": "Java Developer",
+      "company": "ME Digital Group",
+      "jobType": "Contract",
+      "experience": "Senior",
+      "location": "Karachi",
+      "minSalary": 20000,
+      "maxSalary": 40000,
+      "description": "test",
+      "responsibilities": "test",
+      "requirements": "test",
+      "benefits": "test",
+      "skills": "test",
+      "featured": false
     }
   ]
 }

@@ -2,126 +2,290 @@
 import axios from 'axios';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-
-
-const form = reactive({
-    type: 'Full-Time',
-    title: '',
-    description: '',
-    salary: '',
-    location: '',
-    company: {
-        name: '',
-        description: '',
-        contactEmail: '',
-        contactPhone: '',
-    },
-});
+import { ref } from 'vue'
 
 const router = useRouter();
 
-const handleSubmit=(async()=> {
+const currentStep = ref(0)
+const steps = ['Basic Info', 'Details', 'Benefits']
+
+const emit = defineEmits(['back', 'submitted'])
+
+const handleSubmit = async () => {
     try {
-        await axios.post("http://localhost:5000/jobs" , {...form});
+        await axios.post("http://localhost:5000/jobs", { ...formData });
+        emit('submitted', formData);
         router.push("/jobs")
     } catch (error) {
-        console.log("error while creating new job" , error)
+        console.log("error while creating new job", error)
     }
-})
+}
+
+const formData = reactive({
+    title: '',
+    company: '',
+    type: '',
+    experience: '',
+    location: '',
+    minSalary: '',
+    maxSalary: '',
+    description: '',
+    responsibilities: '',
+    requirements: '',
+    benefits: '',
+    skills: '',
+    featured: false
+});
+
 </script>
 
 <template>
-    <section class="bg-green-50">
-        <div class="container m-auto max-w-2xl py-24">
-            <div class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-                <form @submit.prevent="handleSubmit">
-                    <h2 class="text-3xl text-center font-semibold mb-6">Add Job</h2>
+    <div class="min-h-screen bg-slate-50 py-12">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Header -->
+            <div class="mb-8">
+                <button @click="emit('back')"
+                    class="text-blue-600 hover:text-blue-700 font-medium mb-4 flex items-center gap-2">
+                    ← Back
+                </button>
+                <h1 class="text-4xl font-bold text-slate-900 mb-2">Post a New Job</h1>
+                <p class="text-slate-600 text-lg">Fill in the details below to post your job listing</p>
+            </div>
 
-                    <div class="mb-4">
-                        <label for="type" class="block text-gray-700 font-bold mb-2">Job Type</label>
-                        <select v-model="form.type" id="type" name="type" class="border rounded w-full py-2 px-3"
-                            required>
-                            <option value="Full-Time">Full-Time</option>
-                            <option value="Part-Time">Part-Time</option>
-                            <option value="Remote">Remote</option>
-                            <option value="Internship">Internship</option>
-                        </select>
+            <!-- Progress Indicator -->
+            <div class="mb-8 flex items-center gap-4">
+                <div v-for="(step, index) in steps" :key="index" class="flex items-center gap-2">
+                    <div :class="[
+                        'w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all',
+                        currentStep > index
+                            ? 'bg-blue-600 text-white'
+                            : currentStep === index
+                                ? 'bg-blue-600 text-white ring-4 ring-blue-200'
+                                : 'bg-slate-200 text-slate-600'
+                    ]">
+                        {{ index + 1 }}
                     </div>
+                    <span :class="[
+                        'font-medium',
+                        currentStep >= index ? 'text-slate-900' : 'text-slate-400'
+                    ]">
+                        {{ step }}
+                    </span>
+                    <div v-if="index < steps.length - 1" :class="[
+                        'flex-1 h-1 mx-2',
+                        currentStep > index ? 'bg-blue-600' : 'bg-slate-200'
+                    ]"></div>
+                </div>
+            </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Job Listing Name</label>
-                        <input type="text" v-model="form.title" id="name" name="name"
-                            class="border rounded w-full py-2 px-3 mb-2" placeholder="eg. Beautiful Apartment In Miami"
+            <!-- Form -->
+            <form @submit.prevent="handleSubmit" class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+
+                <!-- Step 1: Basic Job Information -->
+                <div v-if="currentStep === 0" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Job Title *</label>
+                        <input v-model="formData.title" type="text" placeholder="e.g., Senior Frontend Developer"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required />
                     </div>
-                    <div class="mb-4">
-                        <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
-                        <textarea id="description" v-model="form.description" name="description"
-                            class="border rounded w-full py-2 px-3" rows="4"
-                            placeholder="Add any job duties, expectations, requirements, etc"></textarea>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-900 mb-2">Company Name *</label>
+                            <input v-model="formData.company" type="text" placeholder="Your company name"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-900 mb-2">Job Type *</label>
+                            <select v-model="formData.type"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                                <option value="">Select job type</option>
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Contract">Contract</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Internship">Internship</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="type" class="block text-gray-700 font-bold mb-2">Salary</label>
-                        <select id="salary" v-model="form.salary" name="salary" class="border rounded w-full py-2 px-3"
-                            required>
-                            <option value="Under $50K">under $50K</option>
-                            <option value="$50K - $60K">$50 - $60K</option>
-                            <option value="$60K - $70K">$60 - $70K</option>
-                            <option value="$70K - $80K">$70 - $80K</option>
-                            <option value="$80K - $90K">$80 - $90K</option>
-                            <option value="$90K - $100K">$90 - $100K</option>
-                            <option value="$100K - $125K">$100 - $125K</option>
-                            <option value="$125K - $150K">$125 - $150K</option>
-                            <option value="$150K - $175K">$150 - $175K</option>
-                            <option value="$175K - $200K">$175 - $200K</option>
-                            <option value="Over $200K">Over $200K</option>
-                        </select>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-900 mb-2">Experience Level *</label>
+                            <select v-model="formData.experience"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                                <option value="">Select level</option>
+                                <option value="Entry-level">Entry-level</option>
+                                <option value="Mid-level">Mid-level</option>
+                                <option value="Senior">Senior</option>
+                                <option value="Lead">Lead</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-900 mb-2">Location *</label>
+                            <input v-model="formData.location" type="text"
+                                placeholder="e.g., San Francisco, CA or Remote"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required />
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2"> Location </label>
-                        <input type="text" v-model="form.location" id="location" name="location"
-                            class="border rounded w-full py-2 px-3 mb-2" placeholder="Company Location" required />
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-900 mb-2">Minimum Salary (in thousands)
+                                *</label>
+                            <input v-model="formData.minSalary" type="number" placeholder="e.g., 80"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-900 mb-2">Maximum Salary (in thousands)
+                                *</label>
+                            <input v-model="formData.maxSalary" type="number" placeholder="e.g., 120"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required />
+                        </div>
                     </div>
+                </div>
 
-                    <h3 class="text-2xl mb-5">Company Info</h3>
-
-                    <div class="mb-4">
-                        <label for="company" class="block text-gray-700 font-bold mb-2">Company Name</label>
-                        <input type="text" v-model="form.company.name" id="company" name="company"
-                            class="border rounded w-full py-2 px-3" placeholder="Company Name" />
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="company_description" class="block text-gray-700 font-bold mb-2">Company
-                            Description</label>
-                        <textarea id="company_description" v-model="form.company.description" name="company_description"
-                            class="border rounded w-full py-2 px-3" rows="4"
-                            placeholder="What does your company do?"></textarea>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="contact_email" class="block text-gray-700 font-bold mb-2">Contact Email</label>
-                        <input type="email" v-model="form.company.contactEmail" id="contact_email" name="contact_email"
-                            class="border rounded w-full py-2 px-3" placeholder="Email address for applicants"
-                            required />
-                    </div>
-                    <div class="mb-4">
-                        <label for="contact_phone" class="block text-gray-700 font-bold mb-2">Contact Phone</label>
-                        <input type="tel" v-model="form.company.contactPhone" id="contact_phone" name="contact_phone"
-                            class="border rounded w-full py-2 px-3" placeholder="Optional phone for applicants" />
+                <!-- Step 2: Job Details -->
+                <div v-else-if="currentStep === 1" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Job Description *</label>
+                        <textarea v-model="formData.description"
+                            placeholder="Provide a compelling overview of the role and what makes it unique" rows="4"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            required></textarea>
+                        <p class="text-sm text-slate-500 mt-2">{{ formData.description.length }}/500 characters</p>
                     </div>
 
                     <div>
-                        <button
-                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
-                            type="submit">
-                            Add Job
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Responsibilities *</label>
+                        <textarea v-model="formData.responsibilities"
+                            placeholder="List key responsibilities (one per line)" rows="5"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            required></textarea>
+                        <p class="text-sm text-slate-500 mt-2">Enter each responsibility on a new line</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Requirements *</label>
+                        <textarea v-model="formData.requirements"
+                            placeholder="List required qualifications and skills (one per line)" rows="5"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            required></textarea>
+                        <p class="text-sm text-slate-500 mt-2">Enter each requirement on a new line</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Benefits & Skills -->
+                <div v-else-if="currentStep === 2" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Benefits *</label>
+                        <textarea v-model="formData.benefits" placeholder="List job benefits (one per line)" rows="5"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            required></textarea>
+                        <p class="text-sm text-slate-500 mt-2">Enter each benefit on a new line</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Required Skills *</label>
+                        <input v-model="formData.skills" type="text"
+                            placeholder="Enter skills separated by commas (e.g., React, TypeScript, Tailwind)"
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                        <div v-if="formData.skills" class="flex flex-wrap gap-2 mt-3">
+                            <span v-for="skill in formData.skills.split(',').map(s => s.trim()).filter(s => s)"
+                                :key="skill" class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                                {{ skill }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="flex items-center gap-3">
+                            <input v-model="formData.featured" type="checkbox"
+                                class="w-5 h-5 border-slate-300 rounded" />
+                            <span class="text-sm font-medium text-slate-900">Mark as featured job (premium)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between gap-4 mt-8 pt-8 border-t border-slate-200">
+                    <button v-if="currentStep > 0" type="button" @click="currentStep--"
+                        class="px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+                        Previous
+                    </button>
+                    <div v-else></div>
+
+                    <div class="flex gap-3">
+                        <button type="button" @click="emit('back')"
+                            class="px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+                            Cancel
+                        </button>
+                        <button v-if="currentStep < steps.length - 1" type="button" @click="currentStep++"
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Next
+                        </button>
+                        <button v-else type="submit"
+                            class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+                            Post Job
                         </button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-    </section>
+    </div>
 </template>
+
+<!-- <script setup>
+
+
+
+
+const submitForm = () => {
+  if (validateForm()) {
+    emit('submitted', formData.value)
+    formData.value = {
+      jobTitle: '',
+      company: '',
+      jobType: '',
+      experience: '',
+      location: '',
+      minSalary: '',
+      maxSalary: '',
+      description: '',
+      responsibilities: '',
+      requirements: '',
+      benefits: '',
+      skills: '',
+      featured: false
+    }
+    currentStep.value = 0
+  }
+}
+
+const validateForm = () => {
+  return (
+    formData.value.jobTitle.trim() &&
+    formData.value.company.trim() &&
+    formData.value.jobType &&
+    formData.value.experience &&
+    formData.value.location.trim() &&
+    formData.value.minSalary &&
+    formData.value.maxSalary &&
+    formData.value.description.trim() &&
+    formData.value.responsibilities.trim() &&
+    formData.value.requirements.trim() &&
+    formData.value.benefits.trim() &&
+    formData.value.skills.trim()
+  )
+}
+
+const emit = defineEmits(['back', 'submitted'])[1]
+</script> -->
