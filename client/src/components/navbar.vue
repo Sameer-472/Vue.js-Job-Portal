@@ -1,11 +1,14 @@
 <script setup>
 import logo from '@/assets/logo.svg'
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const isActiveLink = (currentRoute) => {
     const route = useRoute();
     return route.path === currentRoute
 }
+
+const currentPage = ref('home')
 </script>
 
 <template>
@@ -40,13 +43,35 @@ const isActiveLink = (currentRoute) => {
                 <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg"></div>
                 <span class="text-xl font-bold text-slate-900">JobHub</span>
             </div>
-            <div class="flex items-center gap-6">
-                <RouterLink to="/" :class="[isActiveLink('/') ? 'text-slate-900 ' : 'text-slate-600' , 'hover:text-slate-900 font-medium']">Browse Jobs</RouterLink>
-                <!-- <button class="text-slate-600 hover:text-slate-900 font-medium">For Companies</button> -->
-                <RouterLink to="/jobs/add-job" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <!-- <div class="flex items-center gap-6">
+                <RouterLink to="/"
+                    :class="[isActiveLink('/') ? 'text-slate-900 ' : 'text-slate-600', 'hover:text-slate-900 font-medium']">
+                    Browse Jobs</RouterLink>
+                <RouterLink to="/jobs/add-job"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                     Post a Job
-                </RouterLink> 
+                </RouterLink>
+            </div> -->
+            <div class="flex items-center gap-6">
+                <button class="text-slate-600 hover:text-slate-900 font-medium">Browse Jobs</button>
+                <button class="text-slate-600 hover:text-slate-900 font-medium">For Companies</button>
+                <button @click="currentPage = 'post-job'"
+                    class="px-4 py-2 bg-slate-100 text-slate-900 rounded-lg hover:bg-slate-200 transition-colors font-medium">
+                    Post a Job
+                </button>
+                <!-- Enhanced login/register buttons styling -->
+                <div class="flex items-center gap-3 border-l border-slate-200 pl-6">
+                    <button @click="currentPage = 'login'"
+                        class="text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                        Log In
+                    </button>
+                    <button @click="currentPage = 'register'"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Sign Up
+                    </button>
+                </div>
             </div>
         </nav>
+
     </header>
 </template>
